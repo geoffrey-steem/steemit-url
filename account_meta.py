@@ -13,10 +13,16 @@ def homepage():
 def account_meta(account_name):
     rpc = SteemNodeRPC("wss://steemit.com/wspa")
 
-    account_meta = json.loads(rpc.get_account(account_name)['json_metadata'])
-    account_url = account_meta['url']
+    try:    
+        account_meta = json.loads(rpc.get_account(account_name)['json_metadata'])
+        
+   
+        account_url = account_meta['url']
     
-    return redirect(account_url, code=302)
+        return redirect(account_url, code=302)
+
+    except:
+        return('Something went wrong.  Perhaps ' + account_name + ' hasn\'t set their url metadata?')
 
 if __name__ == "__main__":
     app.run(debug=True,host='0.0.0.0',port=5000)
